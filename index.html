@@ -11,7 +11,7 @@
   <!-- ========= -->
   <!-- Your HTML -->
   <!-- ========= -->
-
+  <div id="container">Loading...</div>
   <!-- ========= -->
   <!-- Libraries -->
   <!-- ========= -->
@@ -24,7 +24,20 @@
   <!-- Javascript code -->
   <!-- =============== -->
   <script type="text/javascript">
-    // your JS code goes here
+    var AppView = Backbone.View.extend({
+      // el - stands for element. Every view has an associate element in HTML where content will be rendered
+      el: '#container',
+      // The first function called when the view is instantiated
+      initialize: function () {
+        this.render();
+      },
+      // $el - its a cached jQuery object (el), in which you can use jQuery functions to push content. Like the Hello World in this case.
+      render: function () {
+        this.$el.html('Hello World');
+      }
+    })
+
+    var appView = new AppView();
   </script>
 
 </body>
