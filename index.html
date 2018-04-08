@@ -38,9 +38,10 @@
 
   <script type="text/template" id="item-template">
     <div class="view">
-        <input class="edit" value="<%- title %>">
-        <input class="toggle" type="checkbox" <%= completed ? 'checked': '' %>>
-        <label><%- title %></label>
+      <input class="toggle" type="checkbox" <%= completed ? 'checked': '' %>>
+      <label><%- title %></label>
+      <input class="edit" value="<%- title %>">
+      <button class="destroy">remove</button>
     </div>
   </script>
 
@@ -77,12 +78,14 @@
       },
       initialize: function () {
         this.model.on('change', this.render, this);
+        this.model.on('destroy', this.remove, this);
       },
       events: {
         'dblclick label': 'edit',
         'keypress .edit': 'updateOnEnter',
         'blur .edit': 'close',
-        'click .toggle': 'toggleCompleted'
+        'click .toggle': 'toggleCompleted',
+        'click .destroy': 'destroy'
       },
       edit: function () {
         this.$el.addClass('editing');
@@ -102,6 +105,9 @@
       },
       toggleCompleted: function () {
         this.model.toggle();
+      },
+      destroy: function () {
+        this.model.destroy();
       }
     })
 
@@ -118,12 +124,9 @@
         'keypress #new-todo': 'createTodoOnEnter'
       },
       createTodoOnEnter: function (e) {
-        console.log('here');
         if (e.which !== 13 | !this.input.val().trim()) { // ENTER_KEY = 13
-          console.log('empty return')
           return;
         }
-        console.log('should be adding...')
         app.todoList.create(this.newAttributes());
         this.input.val(''); // clean input box
       },
