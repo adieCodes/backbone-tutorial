@@ -39,7 +39,7 @@
   <script type="text/template" id="item-template">
     <div class="view">
         <input class="edit" value="<%- title %>">
-        <input class="toggle" type="checkbox">
+        <input class="toggle" type="checkbox" <%= completed ? 'checked': '' %>>
         <label><%- title %></label>
     </div>
   </script>
@@ -52,6 +52,9 @@
       defaults: {
         title: '',
         completed: false
+      },
+      toggle: function () {
+        this.save({ completed: !this.get('completed') });
       }
     })
 
@@ -78,7 +81,8 @@
       events: {
         'dblclick label': 'edit',
         'keypress .edit': 'updateOnEnter',
-        'blur .edit': 'close'
+        'blur .edit': 'close',
+        'click .toggle': 'toggleCompleted'
       },
       edit: function () {
         this.$el.addClass('editing');
@@ -95,6 +99,9 @@
         if (e.which === 13) {
           this.close();
         }
+      },
+      toggleCompleted: function () {
+        this.model.toggle();
       }
     })
 
